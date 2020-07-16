@@ -1,0 +1,161 @@
+<!doctype html>
+<html long="es">
+
+  <head>
+      <meta charset="utf-8">
+      <meta name="viweport" content="width=device-width,initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title> Mi Perfil </title>
+      {% load static %}
+      <link rel="stylesheet" type="text/css" href="{% static 'bookflixApp/styles/style.css' %}">
+      <style>
+          .boton_iniciarSession{
+          text-decoration: none;
+          padding: 10px;
+          font-weight: 600;
+          font-size: 10px;
+          color: #ffffff;
+          background-color: #b71e1e;
+          border-radius: 15px;
+          border: 2px solid #ffffff;
+          }
+          ::-webkit-scrollbar{
+            display: none;
+          }
+          .accesos li{
+            display: inline-block;
+          }
+      </style>
+  </head>
+
+      <body>
+        <!--caja todo-->
+        <div class="General">
+          <img style="position: absolute; width: 100%; height: 100%;" src="{% static 'bookflixApp/imagenes/background.jpg' %}">
+          <!--caja BarraSuperior-->
+            <div class="BarraSuperior">
+
+              <a href="/home/"><img class="logo" src="{% static 'bookflixApp/imagenes/logo.png' %}" width="300" ></a>
+
+
+              <!--caja <header -->
+              <div id="header">
+
+                <!--caja navUser -->
+                <ul class="navUser" style="padding-top: 20px;">
+
+                  <li>
+                    {% if request.user.is_staff == 0 %}
+                    <a href=""><img width="35px" src=http://localhost:8001/Plantillas/Portadas/{{perfil.foto}}.jpg></a>
+                    {%else%}
+                    <a href=""><img width="35px" src=http://localhost:8001/Plantillas/Portadas/FotoAdmin.png></a>
+                    {%endif%}
+                      <ul>
+                        {% if request.user.is_staff == 0 %}
+                          <li><a href="/miperfil/">Mi Cuenta</a></li>
+                          <li><a href="/elegirPerfil/">Cambiar de Perfil</a></li>
+                          <li><a href="/favoritos/">Favoritos</a></li>
+                        {% else %}
+                          <li><a href="/admin/">Sitio de Administrador</a></li>
+                        {% endif %}
+                          <li><a href="/logout/">Cerrar Sesion</a></li>
+                      </ul>
+                  </li>
+                </ul>
+              <!--fin caja header -->
+              </div>
+
+            <!--fin caja barra BarraSuperior-->
+            </div>
+
+            <div class="Centro">
+                <center> <h1 style="color: white; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size: 45px;"> TU PERFIL <h1> </center>
+                <hr>
+              <div style="padding-left: 50px; color: white; font-family: sans-serif;font-size: 15px;">
+                <center><br><p>{{error}}</p></center>
+                <br>
+                <div style="margin-left: 15%;">
+                  <ul class="accesos">
+                      <li>
+                        {%if usu.tipo.tipo == 'Comun' %}
+                          <a class="boton_iniciarSession"type= "sumbit" href="/pasateapremium/" onclick="return confirm('Seguro que queres pasarte a premium?')">Pasarme a Premium</a>
+                        {%else%}
+                          <a class="boton_iniciarSession" href="/dejardeserpremium/"onclick="return confirm('¿Seguro que queres dejar de ser premium?')"> Deja de ser Premium </a>
+                        {%endif%}
+                      </li>
+                      <li>
+                        <a class="boton_iniciarSession" href="/historialLectura/"> Historial de Lectura </a>
+                      </li>
+                      <li>
+                        {% if request.user.is_staff == 0 %}
+                          <a class="boton_iniciarSession"  href="/eliminarMiCuenta/" >Eliminar mi Cuenta</a>
+                        {%endif%}
+                      </li>
+                  </ul>
+                  <form action="/miperfil/" style="padding-top: 25px;" method="POST">
+                    <hr>
+                    <p style="padding-top: 10px;color: darkgray; font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">DATOS PERSONALES</p>
+                    <div style="margin-left: 15%;">
+                    <h7>Nombre:  </h7><input type="text" name="nombre" required="True" value="{{usu.user.first_name}}"><br><br>
+                    <h7>Apellido:  </h7><input type="text" name="apellido" required="True" value="{{usu.user.last_name}}"><br><br>
+                    {% csrf_token %}
+                    <h7 style="padding-right: 17px;">Email:  </h7><input required="True" type="email" name="email" value="{{usu.user.email}}"><br><br>
+                    <h7 style="padding-right: 29px;">DNI:  </h7><input type="number" name="dni" value="{{usu.dni}}"><br><br>
+                    <h7>Fecha de Nacimiento:  </h7>
+                    <div style="margin-left: 10%;">
+                      <p style="padding-left: 35px; padding-top: 5px;">Fecha Actual: {{usu.nacimiento}}</p>
+                      <div style="padding-left: 35px;padding-top: 5px;">
+                        <input type="date"  name="nacimiento">   <!--<small style="font-size: 10px;">Formato: AAAA-MM-DD</small><br><br>-->
+                      </div>
+                    </div>
+                    <br>
+                  </div>
+                  <hr>
+                   <p style="padding-top: 10px;color: darkgray;font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">FACTURACION</p><br>
+                   <div style="margin-left: 15%;">
+                    <div id="tarjeta">
+                        <h7 style="padding-right: 16px;">Numero de Tarjeta:  </h7><input type="number" name="numero" value="{{usu.tarjeta.num}}"><br><br>
+                        <h7>Codigo de Seguridad:  </h7><input type="number" name="cod" value="{{usu.tarjeta.cod}}"><br><br>
+                        <h7 style="padding-right: 17px;">Nombre del Titular:  </h7><input type="text" name="nomT" value="{{usu.tarjeta.nom}}"><br><br>
+                        <h7>Fecha de Vencimiento:  </h7>
+                        <div style="margin-left: 11%;">
+                          <p style="padding-left: 35px; padding-top: 5px;">Fecha Actual: {{usu.tarjeta.venc}}</p>
+                          <div style="padding-left: 35px;padding-top: 5px;">
+                            <input type="date" name="fechaV" placeholder="{{usu.tarjeta.venc}}">   <!--<small style="font-size: 10px;">Formato: AAAA-MM-DD</small><br><br>-->
+                          </div>
+                        </div>
+                    </div>    
+                  </div>
+                  <div style="margin-left: 45%; padding-top: 55px;">  
+                    <button class="boton_iniciarSession" style="margin-right: 1%;" type="submit">GUARDAR</button>
+                  </div>  
+                  </form>
+                </div>
+
+                
+            </div>
+            <div style="padding-top: 45px;">
+              <center>
+                <p style="font-style: italic;font-family: cursive;font-size: 15px;color: white;">¿Todavia no activaste los demás perfiles de tu cuenta?</p><br>
+                <a class="boton_iniciarSession" href="/miperfil/nuevoPerfil/">ACTIVAR NUEVO PERFIL</a>
+              </center>
+             </div>
+            <!-- fin centro -->
+            </div>
+
+        <!--fin caja todo-->
+        </div>
+
+      </body>
+        <script src="{% static 'bookflixApp/js/myscript.js' %}"></script>
+
+</html>
+
+
+
+
+
+
+
+
+

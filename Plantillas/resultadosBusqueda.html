@@ -1,0 +1,140 @@
+<!doctype html>
+<html long="es">
+
+  <head>
+      <meta charset="utf-8">
+      <meta name="viweport" content="width=device-width,initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title> Resultados de Busqueda </title>
+      {% load static %}
+      <link rel="stylesheet" type="text/css" href="{% static 'bookflixApp/styles/style.css' %}">
+      <style>
+        .libros li {
+          vertical-align: top;
+          display: inline-block;
+          font-size: 1.2em;
+          padding: 1.5em;
+        }
+        #cuadro{
+          width: 300px;
+        }
+        .boton_iniciarSession{
+          text-decoration: none;
+          padding: 5px;
+          font-weight: 600;
+          font-size: 10px;
+          color: #ffffff;
+          background-color: #b71e1e;
+          border-radius: 15px;
+          border: 2px solid #ffffff;
+        }
+        ::-webkit-scrollbar{
+          display: none;
+        }
+      </style>
+  </head>
+
+      <body>
+        <!--caja todo-->
+        <div class="General">
+          <img style="position: absolute; width: 100%; height: 100%;" src="{% static 'bookflixApp/imagenes/background.jpg' %}">
+          <!--caja BarraSuperior-->
+            <div class="BarraSuperior">
+
+              <a href="/home/"><img class="logo" style="padding-right: 20px" src="{% static 'bookflixApp/imagenes/logo.png' %}" width="300" ></a>
+
+
+              <!--caja <header -->
+              <div id="header">
+
+                <!--caja navUser -->
+                <ul class="navUser" style="padding-top: 20px;">
+
+                  <li>
+                    {% if request.user.is_staff == 0 %}
+                    <a href=""><img width="35px" src=http://localhost:8001/Plantillas/Portadas/{{perfil.foto}}.jpg></a>
+                    {%else%}
+                    <a href=""><img width="35px" src=http://localhost:8001/Plantillas/Portadas/FotoAdmin.png></a>
+                    {%endif%}
+                      <ul>
+                        {% if request.user.is_staff == 0 %}
+                          <li><a href="/miperfil/">Mi Cuenta</a></li>
+                          <li><a href="/elegirPerfil/">Cambiar de Perfil</a></li>
+                          <li><a href="/favoritos/">Favoritos</a></li>
+                        {% else %}
+                          <li><a href="/admin/">Sitio de Administrador</a></li>
+                        {% endif %}
+                          <li><a href="/logout/">Cerrar Sesion</a></li>
+                      </ul>
+                  </li>
+                </ul>
+
+              <!--fin caja header -->
+              </div>
+
+
+              <!--segunda caja header -->
+              <div id="headerTwo">
+
+                
+
+
+                <!--fin segunda caja header -->
+                </div>
+
+
+            <!--fin caja barra BarraSuperior-->
+            </div>
+
+            <div class="Centro">
+                <center> <h1 style="color: white; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size: 35px;padding-top: 5px;padding-bottom: 5px;"> Estas buscando: <strong>{{que}}</strong>  <h1> </center>
+                
+                <center>
+                  <form id="formulario" action='/resultadosBusqueda/' method="GET" style="padding-top: 15px;">
+                    <input type="number" value="0" name="dist" hidden="True">
+                    <input id=cuadro type="text" name="busqueda" placeholder="Ingrese titulo de libro o nombre de autor a buscar">
+                    <input class="boton_iniciarSession" type="submit" value="Buscar">
+                    <a class="boton_iniciarSession" href="/historial/">Historial de Busqueda</a>
+                  </form>
+                <br>
+                </center>
+                <div style="padding-top: 25px;">
+                  {% if librosC %}
+                  <center>
+                    <center><p style="font-family: sans-serif;color: white;font-size: 25px;">Su busqueda retorno {{librosC|length}} resultados</p></center>
+                    <ul class="libros">
+                      {% for l in librosC %}
+                        {% for a in librosS %}
+                          {% if a.id == l.id %}
+                          <li>
+                            <form action="/mostrarInfoLibro/" method="GET">
+                                  
+                                  <input type="number" hidden="True" name="isbn" value={{a.isbn}}>
+                                  <button type="submit" style="background-color: transparent;border-color: transparent;"><img width="100px" src=http://localhost:8001/Plantillas/Portadas/{{l.titulo}}-{{l.autor}}.jpg></button>
+                                  
+                                  <center><small style="color: white;"> {{a.titulo}} </small></center>
+                                  <center><small style="color: white;"> {{a.autor}} </small></center>
+                            </form>
+                          <br>
+                              <br><br>
+                          {% endif %}
+                          </li>
+                        {% endfor %}
+                    {% endfor %}
+                    </ul>
+                    </center>
+                  {% else %}
+                    <center><p style="font-family: sans-serif;color: white;font-size: 25px;">Su busqueda no retorno ningun resultado</p></center>
+                  {% endif %}
+                </div>
+            <!-- fin centro -->
+            </div>
+
+        <!--fin caja todo-->
+        </div>
+
+      </body>
+        <script src="{% static 'bookflixApp/js/myscript.js' %}"></script>
+
+</html>
+

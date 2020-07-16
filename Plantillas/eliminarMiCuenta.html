@@ -1,0 +1,119 @@
+<!doctype html>
+<html long="es">
+
+  <head>
+      <meta charset="utf-8">
+      <meta name="viweport" content="width=device-width,initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title> {{libro}} </title>
+      {% load static %}
+      <link rel="stylesheet" type="text/css" href="{% static 'bookflixApp/styles/style.css' %}">
+      <style>
+        .info {
+            margin-left: 5%;
+            width: 300px;
+            position: absolute;
+        }
+        ::-webkit-scrollbar{
+          display: none;
+        }
+        .boton_iniciarSession{
+            text-decoration: none;
+            padding: 10px;
+            font-weight: 600;
+            font-size: 12px;
+            color: #ffffff;
+            background-color: #b71e1e;
+            border-radius: 15px;
+            border: 2px solid #ffffff;
+            }
+      </style>
+  </head>
+
+      <body>
+        <!--caja todo-->
+        <div class="General">
+          <img style="position: absolute; width: 100%; height: 100%;" src="{% static 'bookflixApp/imagenes/background.jpg' %}">
+          <!--caja BarraSuperior-->
+            <div class="BarraSuperior">
+
+              <a href="/home/"><img class="logo" style="padding-right: 20px" src="{% static 'bookflixApp/imagenes/logo.png' %}" width="300" ></a>
+
+
+              <!--caja <header -->
+              <div id="header">
+
+                <!--caja navUser -->
+                <ul class="navUser" style="padding-top: 20px;">
+
+                  <li>
+                    {% if request.user.is_staff == 0 %}
+                    <a href=""><img width="35px" src=http://localhost:8001/Plantillas/Portadas/{{perfil.foto}}.jpg></a>
+                    {%else%}
+                    <a href=""><img width="35px" src=http://localhost:8001/Plantillas/Portadas/FotoAdmin.png></a>
+                    {%endif%}
+                      <ul>
+                        {% if request.user.is_staff == 0 %}
+                          <li><a href="/miperfil/">Mi Cuenta</a></li>
+                          <li><a href="/elegirPerfil/">Cambiar de Perfil</a></li>
+                          <li><a href="/favoritos/">Favoritos</a></li>
+                        {% else %}
+                          <li><a href="/admin/">Sitio de Administrador</a></li>
+                        {% endif %}
+                          <li><a href="/logout/">Cerrar Sesion</a></li>
+                      </ul>
+                  </li>
+                </ul>
+
+              <!--fin caja header -->
+              </div>
+
+
+              <!--segunda caja header -->
+              <div id="headerTwo">
+
+                
+
+
+                <!--fin segunda caja header -->
+                </div>
+
+
+            <!--fin caja barra BarraSuperior-->
+            </div>
+
+            <div class="Centro">
+                <center> <h1 style="color: white; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size: 35px;padding-top: 5px;padding-bottom: 5px;"> Eliminar Mi Cuenta</h1> </center>
+                <hr>
+                <center>   
+                    <div style="margin-top: 5%;"> 
+                      <form method="POST" action="/eliminarMiCuenta/">
+                        {% csrf_token %}
+                        {% if cod == 1 %}
+                          <h3 style="color: white; padding-bottom: 15px;">Debe completar todos los campos</h3>
+                        {% else %}
+                          {% if cod == 2 %}
+                            <h3 style="color: white; padding-bottom: 15px">La contraseña ingresada no es correcta</h3>
+                          {% endif %}
+                        {% endif %}
+                        <p style="color: white;font-family: sans-serif; padding-bottom: 5px;font-size: 25px;">Ingresa tu contraseña </p>
+                        <input type="password" name="password" placeholder="Password"><br><br>
+                        <input class="boton_iniciarSession" type="submit" value="ELIMINAR MI CUENTA" onclick="return confirm('Seguro que queres Eliminar tu Cuenta? \n Si borras tu cuenta, todos los datos relacionados a tu cuenta y tus perfiles se eliminara')" >
+                      </form>
+                    </div>
+                  </center>
+        
+                  <center style="padding-top: 50px;">
+                    <!--<p style="font-style: italic;font-family: cursive;font-size: 15px;color: white;">¿No estas registrado?</p><br>-->
+                    <a class="boton_iniciarSession" href="/miperfil/">VOLVER A MI PERFIL</a>
+                  </center>
+            <!-- fin centro -->
+            </div>
+
+        <!--fin caja todo-->
+        </div>
+
+      </body>
+        <script src="{% static 'bookflixApp/js/myscript.js' %}"></script>
+
+</html>

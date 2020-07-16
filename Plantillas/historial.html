@@ -1,0 +1,129 @@
+<!doctype html>
+<html long="es">
+
+  <head>
+      <meta charset="utf-8">
+      <meta name="viweport" content="width=device-width,initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title> Resultados de Busqueda </title>
+      {% load static %}
+      <link rel="stylesheet" type="text/css" href="{% static 'bookflixApp/styles/style.css' %}">
+      <style>
+        .libros li {
+          vertical-align: top;
+          font-size: 1.2em;
+          padding: 1.5em;
+        }
+        .boton_iniciarSession{
+          text-decoration: none;
+          padding: 5px;
+          font-weight: 600;
+          font-size: 10px;
+          color: #ffffff;
+          background-color: #b71e1e;
+          border-radius: 15px;
+          border: 2px solid #ffffff;
+        }
+        ::-webkit-scrollbar{
+          display: none;
+        }
+      </style>
+  </head>
+
+      <body>
+        <!--caja todo-->
+        <div class="General">
+          <img style="position: absolute; width: 100%; height: 100%;" src="{% static 'bookflixApp/imagenes/background.jpg' %}">
+          <!--caja BarraSuperior-->
+            <div class="BarraSuperior">
+
+              <a href="/home/"><img class="logo" style="padding-right: 20px" src="{% static 'bookflixApp/imagenes/logo.png' %}" width="300" ></a>
+
+
+              <!--caja <header -->
+              <div id="header">
+
+                <!--caja navUser -->
+                <ul class="navUser" style="padding-top: 20px;">
+
+                  <li>
+                    {% if request.user.is_staff == 0 %}
+                    <a href=""><img width="35px" src=http://localhost:8001/Plantillas/Portadas/{{perfil.foto}}.jpg></a>
+                    {%else%}
+                    <a href=""><img width="35px" src=http://localhost:8001/Plantillas/Portadas/FotoAdmin.png></a>
+                    {%endif%}
+                      <ul>
+                        {% if request.user.is_staff == 0 %}
+                          <li><a href="/miperfil/">Mi Cuenta</a></li>
+                          <li><a href="/elegirPerfil/">Cambiar de Perfil</a></li>
+                          <li><a href="/favoritos/">Favoritos</a></li>
+                        {% else %}
+                          <li><a href="/admin/">Sitio de Administrador</a></li>
+                        {% endif %}
+                          <li><a href="/logout/">Cerrar Sesion</a></li>
+                      </ul>
+                  </li>
+                </ul>
+
+              <!--fin caja header -->
+              </div>
+
+
+              <!--segunda caja header -->
+              <div id="headerTwo">
+
+                
+
+
+                <!--fin segunda caja header -->
+                </div>
+
+
+            <!--fin caja barra BarraSuperior-->
+            </div>
+
+            <div class="Centro">
+                <center> <h1 style="color: white; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size: 35px;padding-top: 5px;padding-bottom: 5px;"> Historial de Busqueda <h1> 
+                  <form style="padding-bottom: 15px;" action='/limpiarHistorial/' method="GET">
+                    <input  class="boton_iniciarSession" type="submit" value="LIMPIAR HISTORIAL" style="font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;font-size: 9px;">
+                  </form>
+                </center>
+                <hr>
+                <div style="padding-top: 5px;">
+                  {% if busquedas %}
+                  <div style="margin-left: 5%;">
+                    <ul class="libros">
+                      {% for b in busquedas %}
+                          <li style="padding-top: 10px; padding-bottom: 10px;">
+                            <form action="/resultadosBusqueda/" method="GET">
+                                <input type="number" value="1" name="dist" hidden="True">
+                                <p style="font-family: sans-serif;color: white;font-size: 26px;">Busqueda: </p>
+                                <p style="font-family: sans-serif;padding-left: 125px;color: white;font-size: 30px;">{{b.que}}</p>
+                                <div>
+                                    <p style="font-family: sans-serif;color: white;font-size: 26px;">Fecha: </p>
+                                    <p style="font-family: sans-serif;padding-left: 125px;color: white;font-size: 30px;">{{b.fecha}}</p>
+                                </div>
+                                <input type="text" name="busqueda" value="{{b.que}}" hidden="True">
+                                <input class="boton_iniciarSession" type="submit" value="Volver a Buscar">
+                            </form>
+                            
+                          </li>
+                          <hr>
+                    {% endfor %}
+                    </ul>
+                </div>
+                  {% else %}
+                    <center><p style="font-family: sans-serif;color: white;font-size: 25px;">Aun no realizaste ninguna busqueda</p></center>
+                  {% endif %}
+                </div>
+            <!-- fin centro -->
+            </div>
+
+        <!--fin caja todo-->
+        </div>
+
+      </body>
+        <script src="{% static 'bookflixApp/js/myscript.js' %}"></script>
+
+</html>
+

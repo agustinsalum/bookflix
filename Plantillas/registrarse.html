@@ -1,0 +1,136 @@
+<!doctype html>
+<html long="es">
+
+  <head>
+      <meta charset="utf-8">
+      <meta name="viweport" content="width=device-width,initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title> Registrarme </title>
+      {% load static %}
+      <link rel="stylesheet" type="text/css" href="{% static 'bookflixApp/styles/style.css' %}">
+      <style>
+          #formInicio{
+              padding-top: 20px;
+          }
+          
+          #tarjeta{
+              margin-left: 50;
+          }
+          .boton_iniciarSession{
+            text-decoration: none;
+            padding: 5px;
+            font-weight: 600;
+            font-size: 15px;
+            color: #ffffff;
+            background-color: #b71e1e;
+            border-radius: 15px;
+            border: 2px solid #ffffff;
+            }      
+          ::-webkit-scrollbar{
+            display: none;
+          }
+       </style>
+  </head>
+
+      <body>
+        <!--caja todo-->
+        <div class="General">
+          <img style="position: absolute; width: 100%; height: 100%;" src="{% static 'bookflixApp/imagenes/background.jpg' %}">
+          <!--caja BarraSuperior-->
+            <div class="BarraSuperior">
+
+              <img class="logo" src="{% static 'bookflixApp/imagenes/logo.png' %}" width="300" >
+
+            <!--fin caja barra BarraSuperior-->
+            </div>
+
+            <div class="Centro" style="background-color: #0b0b0b0a;">
+              
+               <center><h1 id="cartelBienvenido"  style="color: white;padding-bottom: 5px; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size: 55px;">REGISTRAR USUARIO NUEVO</h1></center> 
+                
+                <div style="color: white;">
+                    {% if error != 0  %}
+                      {% if error == 22  %}
+                      <center style=" padding-top: 25px;">
+                        <p>Por favor complete todos los campos.</p></center>
+                      {% else %}
+                        <center style=" padding-top: 25px;">
+                          <p>Los datos ingresados no son validos. Por favor revise el campo marcado.</p></center>
+                      {%endif%}
+                    {%endif%}
+                </div>
+                
+				      <div style="margin-left: 15%; padding-top: 10px;" id="formInicio"> 
+					      <form action="/registrame/" method="GET" style="color: white;font-family: sans-serif;">
+                        <hr>
+                        <p style="padding-top: 10px;color: darkgray; font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">DATOS PERSONALES</p>
+                        <div style="margin-left: 15%;">
+                        <!--{{ form1.as_p }}-->
+                        <div style="padding-bottom: 10px;">
+                          <h7 style="padding-right: 9px;">Username:  </h7><input type="text" name="username" value="{{userN}}" placeholder="Username">{% if error == 1 %} <p style="color: white;padding-top: 15px;padding-left: 25px;">Username ya existente</p> {%endif%}
+                        </div>
+                        <div style="padding-bottom: 10px;">
+                          <h7>Contraseña:  </h7><input type="password" name="password" placeholder="Password">{% if error == 2 %} <p style="color: white;padding-top: 15px;padding-left: 25px;">Contraseña no valida</p> {%endif%}
+                          <div style="margin-left: 12%;">
+                              <p style="font-family:  'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;padding-top: 8px;">Debe contener al menos 8 caracteres</p>
+                          </div>
+                        </div>
+                        <div style="padding-bottom: 10px;">
+                          <h7 style="padding-right: 43px;">Email:  </h7><input type="email" name="email" value="{{email}}" placeholder="E-Mail">{% if error == 3 %} <p style="color: white;padding-top: 15px;padding-left: 25px;">Email incorrecto o ya existente</p> {%endif%}
+                        </div>
+                        <div style="padding-bottom: 10px;">
+                          <h7 style="padding-right: 25px;">Nombre:  </h7><input type="text" name="name" value="{{nombre}}" placeholder="Nombre">
+                        </div>
+                        <div style="padding-bottom: 10px;">
+                          <h7 style="padding-right: 25px;">Apellido:  </h7><input type="text" name="apellido" value="{{ape}}" placeholder="Apellido">
+                        </div>
+                        <div style="padding-bottom: 10px;">
+                          <h7 style="padding-right: 53px;">DNI:  </h7><input type="number" name="dni" min="0" value="{{dni}}" placeholder="DNI" >{% if error == 6 %} <p style="color: white;padding-top: 15px;padding-left: 25px;">DNI ya registrado</p> {%endif%}
+                        </div>
+                        <div style="padding-bottom: 10px;">
+                          <h7>Fecha de Nacimiento:  </h7><br>
+                          <div style="margin-left: 10%;padding-top: 5px;">
+                            <input type="date" value="{{birth}}" name="nacimiento">{% if error == 7 %} <p style="color: white;padding-top: 15px;padding-left: 25px;">Fecha de Nacimiento corresponde a un menor de edad </p>{%endif%}
+                          </div>
+                        </div>
+                      </div>
+                      <hr>
+                        <p style="padding-top: 10px;color: darkgray; font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">FACTURACION</p>
+                        <div style="margin-left: 15%;">
+                            <div style="padding-bottom: 10px;">
+                              <h7 style="padding-right: 19px;">Numero de Tarjeta:  </h7><input type="number" name="numero" value="{{numT}}" placeholder="Numero de tarjeta" min="0" >{% if error == 8 %} <p style="color: white;padding-top: 15px;padding-left: 25px;">Numero de tarjeta no valido </p> {%endif%}
+                            </div>
+                            <div style="padding-bottom: 10px;">
+                              <h7>Codigo de Seguridad:  </h7><input type="number" name="cod" placeholder="Codigo de seguridad" min="0" value="{{cod}}" max="9999">{% if error == 9 %} <p style="color: white;padding-top: 15px;padding-left: 25px;">Codigo de Seguridad no valido</p> {%endif%}
+                            </div>
+                            <div style="padding-bottom: 10px;">
+                              <h7 style="padding-right: 20px ;">Nombre del Titular:  </h7><input type="text" name="nomT" value="{{nomT}}" placeholder="Nombre del Titular">
+                            </div>
+                            <h7>Fecha de Vencimiento:  </h7><br>
+                              <div style="margin-left: 15%;padding-top: 5px;">
+                                <input type="date" value="{{fechaV}}" name="fechaV">{% if error == 11 %} <p style="color: white;padding-top: 15px;padding-left: 25px;">Fecha de Vencimiento debe ser posterior al dia de hoy.</p> {%endif%}
+                              </div>
+                        </div>
+                        <div style="padding-top: 25px; margin-left: 45%;">
+                          <input type="text" hidden="True" value="NO" name="vengodehome">
+                          <button class="boton_iniciarSession" type="submit">Registrarme</button>
+                        </div>
+                </form>
+              </div>
+              
+              <div style="padding-top: 45px;">
+                <center style="padding-bottom: 30px;">
+                    <p style="font-style: italic;font-family: cursive;font-size: 15px;color: white;">¿Ya estas registrado?</p><br>
+                    <a class="boton_iniciarSession" href="/login/">INICIAR SESION</a>
+                </center>
+              </div>
+         <!-- fin centro -->
+            </div>
+
+        <!--fin caja todo-->
+        </div>
+
+      </body>
+        <script src="{% static 'bookflixApp/js/myscript.js' %}"></script>
+
+</html>

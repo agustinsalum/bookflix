@@ -1,0 +1,83 @@
+<!doctype html>
+<html long="es">
+
+  <head>
+      <meta charset="utf-8">
+      <meta name="viweport" content="width=device-width,initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title> Iniciar Sesion </title>
+      {% load static %}
+      <link rel="stylesheet" type="text/css" href="{% static 'bookflixApp/styles/style.css' %}">
+      <style>
+          #cartelBienvenido{
+              padding-top: 6%;
+          }
+          #formInicio{
+              padding-top: 10px;
+          }
+          .boton_iniciarSession{
+            text-decoration: none;
+            padding: 10px;
+            font-weight: 600;
+            font-size: 15px;
+            color: #ffffff;
+            background-color: #b71e1e;
+            border-radius: 15px;
+            border: 2px solid #ffffff;
+            }
+          ::-webkit-scrollbar{
+            display: none;
+          }
+      </style>
+  </head>
+
+      <body>
+        <!--caja todo-->
+        <div class="General">
+          <img style="position: absolute; width: 100%; height: 100%;" src="{% static 'bookflixApp/imagenes/background.jpg' %}">
+          <!--caja BarraSuperior-->
+            <div class="BarraSuperior">
+
+              <img class="logo" src="{% static 'bookflixApp/imagenes/logo.png' %}" width="300" >
+
+            <!--fin caja barra BarraSuperior-->
+            </div>
+
+            <div class="Centro">
+              
+            <center><h1 id="cartelBienvenido"  style="font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size: 55px; color: white;">INICIAR SESION</h1></center> 
+            <center>   
+            <div id="formInicio"> 
+              <form method="POST" action="/login/">
+                {% csrf_token %}
+                {% if cod == 1 %}
+                  <h3 style="color: white; padding-bottom: 15px;">Debe completar todos los campos</h3>
+                {% else %}
+                  {% if cod == 2 %}
+                    <h3 style="color: white; padding-bottom: 15px">Los datos ingresados no son correctos</h3>
+                  {% endif %}
+                {% endif %}
+                <p style="color: white;font-family: sans-serif;padding-bottom: 5px;">USERNAME: </p>
+                <input type="text" name="username" placeholder="username" ><br><br>
+                <p style="color: white;font-family: sans-serif; padding-bottom: 5px;">PASSWORD: </p>
+                <input type="password" name="password" placeholder="pass"><br><br>
+                <input class="boton_iniciarSession" type="submit" value="LOG IN">
+              </form>
+            </div>
+          </center>
+
+          <center style="padding-top: 50px;">
+            <!--<p style="font-style: italic;font-family: cursive;font-size: 15px;color: white;">¿No estas registrado?</p><br>-->
+            <a class="boton_iniciarSession" href="/">VOLVER A INICIO</a>
+          </center>
+
+            <!-- fin centro -->
+            </div>
+
+        <!--fin caja todo-->
+        </div>
+
+      </body>
+        <script src="{% static 'bookflixApp/js/myscript.js' %}"></script>
+
+</html>

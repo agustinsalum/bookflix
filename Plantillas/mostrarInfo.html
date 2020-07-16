@@ -1,0 +1,340 @@
+<!doctype html>
+<html long="es">
+  <head>
+      <meta charset="utf-8">
+      <meta name="viweport" content="width=device-width,initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title> {{libro}} </title>
+      {% load static %}
+      <link rel="stylesheet" type="text/css" href="{% static 'bookflixApp/styles/style.css' %}">
+      <style>
+        .info {
+            margin-left: 5%;
+            width: 325px;
+            height: 450px;
+            position: absolute;
+            max-width: 325px;
+            min-width: 325px;
+            max-height: 450px;
+            min-height: 450px;
+        }
+        ::-webkit-scrollbar{
+          display: none;
+        } 
+        textarea{
+          resize: none;
+          background-color: #ffffffae;
+          color: black;
+          font-size: 17px;
+          text-indent: 2mm;
+
+          font-weight: 500;
+          font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+        }
+        .calificar{
+          padding-bottom: 15px;
+        }
+        .calificar li {
+          vertical-align: top;
+          display: inline-block;
+        }
+      </style>
+  </head>
+      <body>
+        <!--caja todo-->
+        <div class="General">
+          <img style="position: absolute; width: 100%; height: 100%;" src="{% static 'bookflixApp/imagenes/background.jpg' %}">
+          <!--caja BarraSuperior-->
+            <div class="BarraSuperior">
+
+              <a href="/home/"><img class="logo" style="padding-right: 20px" src="{% static 'bookflixApp/imagenes/logo.png' %}" width="300" ></a>
+
+
+              <!--caja <header -->
+              <div id="header">
+
+                <!--caja navUser -->
+                <ul class="navUser" style="padding-top: 20px;">
+
+                  <li>
+                    {% if request.user.is_staff == 0 %}
+                    <a href=""><img width="35px" src=http://localhost:8001/Plantillas/Portadas/{{perfil.foto}}.jpg></a>
+                    {%else%}
+                    <a href=""><img width="35px" src=http://localhost:8001/Plantillas/Portadas/FotoAdmin.png></a>
+                    {%endif%}
+                      <ul>
+                        {% if request.user.is_staff == 0 %}
+                          <li><a href="/miperfil/">Mi Cuenta</a></li>
+                          <li><a href="/elegirPerfil/">Cambiar de Perfil</a></li>
+                          <li><a href="/favoritos/">Favoritos</a></li>
+                        {% else %}
+                          <li><a href="/admin/">Sitio de Administrador</a></li>
+                        {% endif %}
+                          <li><a href="/logout/">Cerrar Sesion</a></li>
+                      </ul>
+                  </li>
+                </ul>
+
+              <!--fin caja header -->
+              </div>
+
+
+              <!--segunda caja header -->
+              <div id="headerTwo">
+
+                
+
+
+                <!--fin segunda caja header -->
+                </div>
+
+
+            <!--fin caja barra BarraSuperior-->
+            </div>
+
+            <div class="Centro">
+                <center> <h1 style="color: white; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size: 35px;padding-top: 5px;padding-bottom: 5px;"> Informacion del Libro</h1> </center>
+                <hr>
+                <center>{{error}}</center>
+                <div style="padding-top: 25px;">
+                    <img class="info" src=http://localhost:8001/Plantillas/Portadas/{{portada}}.jpg>
+                    <div id="datosDelLibro">
+                      <p style="margin-left: 30%; font-family: sans-serif;color: white;font-size: 35px;">{{libro.titulo}}</p>
+                      <p style="margin-left: 30%; font-style: italic;font-family: sans-serif;color: white;font-size: 20px;">Autor: {{libro.autor}}</p>
+                      <p style="margin-left: 30%; font-style: italic;font-family: sans-serif;color: white;font-size: 20px;">Editorial: {{libro.editorial}}</p>
+                      <p style="margin-left: 30%; font-style: italic;font-family: sans-serif;color: white;font-size: 20px;">Genero: {{libro.genero}}</p>
+                      <p style="margin-left: 30%; font-style: italic;font-family: sans-serif;color: white;font-size: 20px;">Trailer: </p>
+                      <p style="margin-left: 30%; margin-right: 2%;font-family: sans-serif;color: white;font-size: 20px;">{{libro.trailer}} </p>
+                      <br>
+                      {% if libro.capitulado %}
+                        {% if pdf%}
+                          <p style="margin-left: 30%; font-style: italic;font-family: sans-serif;color: white;font-size: 20px;">Capitulos:</p><br>
+                        {%endif%}
+                        <ul style="margin-left: 32%;">
+                         {% for each in pdf %}
+                          <li style="padding-bottom: 5px;">
+                              {% if each.capitulado %}  
+                              <form method="GET" action="/l3er/">
+                                <input hidden="True" type="text" value="{{libro.id}}" name="libro">
+                                <input hidden="True" type="number" value="{{each.isbn}}" name="numero">
+                                <input hidden="True" type="text" value="{{portada}}" name="portada">
+                                <button type="submit" style="font-size: 20px;">Capitulo: {{each.isbn}}</button>
+                              </form>
+                               {% else %}
+                                <button style="background-color: tomato;font-size: 20px;">Capitulo: {{each.isbn}} (No Disponible)</button>
+                              {% endif %}
+                          </li>
+                          {% endfor %}
+                        </ul>
+                      {% else %}
+                        <br><br><br><br><br><br><br>
+                      {% endif %}
+                      </div>
+                    <br><br><br><br><br><br>
+                    
+                    <div id="botones">
+                      <div style="margin-top:4%;">
+                      {% if new %}
+                      {% if libro.capitulado %}
+                        <br>
+                        <br>
+                        <br>
+                        <br>
+                      {%endif%}
+                      <p style="margin-left: 8%;margin-top: 4%; font-family: sans-serif;color: white;font-size: 35px;">Proximamente...</p>
+                      {% else %}  
+                      <p style="margin-left: 8%; font-style: italic; font-family: sans-serif;color: white;font-size: 30px;">Calificación</p>
+                      {% if 0 > calificacion %}
+                        <p style="margin-left: 9%; font-style: italic; font-family: sans-serif;color: white;font-size: 20px;">Aun no ha recibido calificaciones</p>
+                      {% else %}
+                        <p style="margin-left: 9%; font-style: italic; font-family: sans-serif;color: white;font-size: 20px;">{{calificacion}}/10</p>
+                      {% endif %}
+                      <br>
+                      {% if libro.capitulado %}
+                        
+                      {% else %}
+                      
+                        {% if vencido %}
+                          <button style="background-color: tomato;margin-left: 8%;width: 200px; height: 35px;"><strong>No disponible para lectura</strong></button><br><br>
+                        {% else %}
+                          <form method="GET" action="/l3er/">
+                                <input hidden="True" type="text" value="{{libro.id}}" name="libro">
+                                <input hidden="True" type="number" value="0" name="numero">
+                                <input hidden="True" type="text" value="{{portada}}" name="portada">
+                                <button type="submit" style="margin-left: 8%;width: 200px; height: 35px;"><strong>LEER</strong></button>
+                          </form>
+                        {% endif %}
+                      {% endif %}
+                      
+                        {% if request.user.is_staff == 0 %}
+                          {% if fav %}
+                          <form action="/mOdIfYFavoRit0/" method="POST">
+                            {% csrf_token %}
+                            <input name="id" type="number" value="{{libro.id}}" hidden="True">
+                            <button type="submit" style="margin-left: 8%;width: 200px; height: 35px;"><strong>Quitar de Mis Favoritos</strong></button> 
+                          </form>
+                          {% else %}
+                            <form action="/mOdIfYFavoRit0/" method="POST">
+                              {% csrf_token %}
+                              <input name="id" type="number" value="{{libro.id}}" hidden="True">
+                              <button type="submit" style="margin-left: 8%;width: 200px; height: 35px;"><strong>Agregar a Mis Favoritos</strong></button> 
+                            </form>
+                          {% endif %}
+                        {% endif %}  
+                      {% endif %}
+                      </div>
+                    <br><br><br>
+                    <p style="margin-left: 8%; font-style: italic; font-family: sans-serif;color: white;font-size: 30px;">Comentarios</p>
+                    <hr><br>
+                    <div style="margin-left: 10%;">
+                      <form method="GET" action="/agregarComentario/">
+                          <textarea type="text" name="texto" style="width: 700px; height: 75px;" maxlength="300" placeholder="Comentá aqui tu opinion del libro!" ></textarea>
+                          <input type="number" hidden="True" value="{{libro.isbn}}" name="isbn">
+                          <div style="padding-top: 10px;">
+                            <button type="submit">Añadir Comentario</button>
+                          </div>
+                      </form>
+                      <div style="margin-top: 1%;">
+                      {% if comentado %}
+                        <hr style="margin-right: 35%;">
+                        {% for each in comentarios %}
+                          <p style="padding-left: 20px ;padding-top: 10px;font-size: 18px; color: rgb(199, 199, 199);"><strong>@{{each.autor.usuario.user.username}} - {{each.autor}}:</strong></p>
+                          <p  style="margin-left: 55px; padding-top: 5px;margin-right: 35%;font-size: 20px; color: white; overflow-wrap: break-word;">{{each.texto}}</p>
+                          {% if each.autor.id == perfil.id %}  
+                            <form style="padding-left: 20px; padding-top: 5px;" method="GET" action="/eliminarComentario/">
+                              <input hidden="True" name="id" value="{{each.id}}">
+                              <input hidden="True" name="isbn" value="{{libro.isbn}}">
+                              <button type="submit">Eliminar</button>
+                            </form>
+                          {%endif%}
+                          <div style="padding-top: 10px; margin-right: 35%;">
+                            <hr>
+                          </div>
+                        {% endfor %}
+                      {% else %}
+                        <p style="margin-left: -2%;  font-style: italic; font-family: sans-serif;color: white;font-size: 20px">Todavia no hay comentarios</p>
+                      {% endif %}
+                      </div>
+                    </div>
+                    <br>
+                    <p style="margin-left: 8%; margin-top: 2%; font-style: italic; font-family: sans-serif;color: white;font-size: 30px;">Calificaciones</p>
+                    <hr>
+                    <div style="margin-left: 10%;">
+                      {% if new %}
+                        <p style="font-style: italic;padding-top:15px  ;font-family: sans-serif;color: white;font-size: 20px">Proximamente...</p>
+                      {%else%}
+                      {% if califico %}
+                        <p style="margin-top: 15px;padding-bottom: 10px; font-style: italic;font-family: sans-serif;color: white;font-size: 27px;">Tu Calificacion:</p>
+                        <p style="margin-left: 45px; margin-right: 35%;font-size: 35px; color: white; overflow-wrap: break-word;"><strong>{{miCali}} / 10</strong></p>  
+                        <!--ACA VA SU CALIFICACION-->
+                      {% endif %}
+                      <p style="margin-top: 5px;padding-bottom: 10px; font-family: sans-serif;color: white;font-size: 20px;">Añadir/Modificar Calificacion</p>
+                      {% if leyo %}
+                        <ul class="calificar">
+                          <li>
+                            <form method="GET" action="/agregarCalificacion/">
+                            <input hidden="True" name="numero" value="1">
+                            <input hidden="True" name="isbn" value="{{libro.isbn}}">
+                            <div class="botonCalificador"><button type="submit" style="background-color: transparent; border-color: transparent;color: white;font-size: 18px;">1</button></div>
+                            </form>
+                          </li>
+                          <li>
+                            <form method="GET" action="/agregarCalificacion/">
+                              <input hidden="True" name="numero" value="2">
+                              <input hidden="True" name="isbn" value="{{libro.isbn}}">
+                              <div class="botonCalificador"><button type="submit" style="background-color: transparent; border-color: transparent;color: white;font-size: 18px;">2</button></div>
+                            </form>
+                          </li>
+                          <li>
+                            <form method="GET" action="/agregarCalificacion/">
+                              <input hidden="True" name="numero" value="3">
+                              <input hidden="True" name="isbn" value="{{libro.isbn}}">
+                              <div class="botonCalificador"><button type="submit" style="background-color: transparent; border-color: transparent;color: white;font-size: 18px;">3</button></div>
+                            </form>
+                          </li>
+                          <li>
+                            <form method="GET" action="/agregarCalificacion/">
+                              <input hidden="True" name="numero" value="4">
+                            <input hidden="True" name="isbn" value="{{libro.isbn}}">
+                              <div class="botonCalificador"><button type="submit" style="background-color: transparent; border-color: transparent;color: white;font-size: 18px;">4</button></div>
+                            </form>
+                          </li>
+                          <li>
+                            <form method="GET" action="/agregarCalificacion/">
+                              <input hidden="True" name="numero" value="5">
+                            <input hidden="True" name="isbn" value="{{libro.isbn}}">
+                              <div class="botonCalificador"><button type="submit" style="background-color: transparent; border-color: transparent;color: white;font-size: 18px;">5</button></div>
+                            </form>
+                          </li>
+                          <li>
+                            <form method="GET" action="/agregarCalificacion/">
+                              <input hidden="True" name="numero" value="6">
+                            <input hidden="True" name="isbn" value="{{libro.isbn}}">
+                              <div class="botonCalificador"><button type="submit" style="background-color: transparent; border-color: transparent;color: white;font-size: 18px;">6</button></div>
+                            </form>
+                          </li>
+                          <li>
+                            <form method="GET" action="/agregarCalificacion/">
+                              <input hidden="True" name="numero" value="7">
+                            <input hidden="True" name="isbn" value="{{libro.isbn}}">
+                              <div class="botonCalificador"><button type="submit" style="background-color: transparent; border-color: transparent;color: white;font-size: 18px;">7</button></div>
+                            </form>
+                          </li>
+                          <li>
+                            <form method="GET" action="/agregarCalificacion/">
+                              <input hidden="True" name="numero" value="8">
+                            <input hidden="True" name="isbn" value="{{libro.isbn}}">
+                              <div class="botonCalificador"><button type="submit" style="background-color: transparent; border-color: transparent;color: white;font-size: 18px;">8</button></div>
+                            </form>
+                          </li>
+                          <li>
+                            <form method="GET" action="/agregarCalificacion/">
+                              <input hidden="True" name="numero" value="9">
+                            <input hidden="True" name="isbn" value="{{libro.isbn}}">
+                              <div class="botonCalificador"><button type="submit" style="background-color: transparent; border-color: transparent;color: white;font-size: 18px;">9</button></div>
+                            </form>
+                          </li>
+                          <li>
+                            <form method="GET" action="/agregarCalificacion/">
+                              <input hidden="True" name="numero" value="10">
+                            <input hidden="True" name="isbn" value="{{libro.isbn}}">
+                              <div class="botonCalificador"><button type="submit" style="background-color: transparent; border-color: transparent;color: white;font-size: 18px;">10</button></div>
+                            </form>
+                          </li>
+                        </ul>
+                      {%else%}
+                        {% if libro.capitulado %}
+                          <p style="padding-left: 20px ;padding-top: -5px; padding-bottom: 10px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;text-transform: uppercase;color: white;font-size: 20px;">🛑 Debe haber leido al menos un capitulo para poder calificarlo 🛑</p>
+                        {%else%}  
+                          <p style="padding-left: 20px;padding-top: -5px; padding-bottom: 10px; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;text-transform: uppercase;color: white;font-size: 20px;">🛑 Debe leer el libro para poder calificarlo 🛑</p>
+                        {%endif%}
+                        <!--ACA VA PARA CALIFICAR-->
+                      {%endif%}
+                      {% if calificado %}
+                        <hr style="margin-right: 35%;">
+                        {% for each in calificaciones %}
+                          {% if each.autor.user.username != request.user.username %}
+                            <p style="padding-left: 20px ;padding-top: 10px;font-size: 18px; color: rgb(199, 199, 199);"><strong>@{{each.autor.usuario.user.username}} - {{each.autor}}:</strong></p>
+                            <p style="margin-left: 55px; padding-top: 5px;margin-right: 35%;font-size: 25px; color: white; overflow-wrap: break-word;">{{each.cuanto}} / 10</p>
+                            <div style="padding-top: 10px; margin-right: 35%;">
+                              <hr>
+                            </div>
+                          {% endif %}
+                        {% endfor %} 
+                      {% else %}
+                        <p style="font-style: italic; font-family: sans-serif;color: white;font-size: 20px">Todavia no hay calificaciones</p>
+                      {% endif %}
+                      {%endif%}
+                    </div>
+                </div>
+              </div>
+            <!-- fin centro -->
+            </div>
+
+        <!--fin caja todo-->
+        </div>
+
+      </body>
+        <script src="{% static 'bookflixApp/js/myscript.js' %}"></script>
+
+</html>

@@ -1,0 +1,74 @@
+<!doctype html>
+<html long="es">
+
+  <head>
+      <meta charset="utf-8">
+      <meta name="viweport" content="width=device-width,initial-scale=1.0">
+      <meta http-equiv="X-UA-Compatible" content="ie=edge">
+      <title> Bookflix </title>
+      {% load static %}
+      <link rel="stylesheet" type="text/css" href="{% static 'bookflixApp/styles/style.css' %}">
+      <style type="text/css">
+          #botonesIndex{
+              padding-top: 50px;
+          }
+          .boton_iniciarSession{
+         text-decoration: none;
+         padding: 10px;
+         font-weight: 600;
+         font-size: 20px;
+          color: #ffffff;
+          background-color: #b71e1e;
+         border-radius: 15px;
+          border: 2px solid #ffffff;
+         }
+        .boton_registrarse{
+        text-decoration: none;
+        padding: 10px;
+        font-weight: 600;
+        font-size: 20px;
+        color: #ffffff;
+        background-color: #b71e1e;
+        border-radius: 15px;
+        border: 2px solid #ffffff;
+        }
+      </style>
+  </head>
+
+      <body>
+        <!--caja todo-->
+        <div class="General">
+          <img style="position: absolute; width: 100%; height: 100%;" src="{% static 'bookflixApp/imagenes/background.jpg' %}">
+          
+
+          <!--caja BarraSuperior-->
+            <div class="BarraSuperior">
+
+              <img class="logo" src="{% static 'bookflixApp/imagenes/logo.png' %}" width="300" style="opacity: 100%;" >
+
+            <!--fin caja barra BarraSuperior-->
+            </div>
+
+            <div class="Centro">
+              <div style="margin-top: 6%;">
+               <center><h5 id="cartelBienvenido"  style="color: white; font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;font-size: 55px;">BIENVENIDO</h5></center> 
+               <div class="CajaBotones" style="padding-top: 40px;">
+                <center> <a class="boton_iniciarSession"    href="/login/">INICIAR SESION</a> </center>
+                <center style="padding-top: 35px;"> <a class="boton_iniciarSession"  href="/sign_in/">REGISTRARSE</a> </center>
+                </div>
+              </div>  
+                
+                
+                <!--<center> <p style="font-style: italic;color: white;margin-top: 98%;"><strong> Copyright 2020. Bookflix. Todos los derechos reservados.</strong></p></center>-->    
+            <!-- fin centro -->
+            </div>
+
+              
+
+        <!--fin caja todo-->
+        </div>
+
+      </body>
+        <script src="{% static 'bookflixApp/js/myscript.js' %}"></script>
+
+</html>

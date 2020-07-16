@@ -1,0 +1,144 @@
+{% extends 'admin/base_site.html' %}
+
+{% load static %}
+
+{% block branding %}
+    <div class="head">
+        <a href="/admin/"><h1 id="name" style="color: white;">Administracion Bookflix</a>
+    </div>
+{% endblock %}
+
+{% block usertools %}
+    <div id="user-tools">
+        Bienvenido/a,
+        <strong>Julian</strong>.
+
+
+        
+            <a href="/">Ver sitio</a> /
+        
+        
+            
+            
+        
+        <a href="/admin/informes/">Informes</a> /
+
+        <a href="/admin/password_change/">Cambiar contraseña</a> /
+        
+        <a href="/admin/logout/">Cerrar sesión</a>
+
+    </div>
+{% endblock%}
+
+{% block extrastyle %}
+    <style>
+        .breadcrumbs{
+                background: #79aec8;
+                padding: 10px 40px;
+                border: none;
+                font-size: 16px;
+                text-align: left;
+                color: #c4dce8;
+        }
+        div.breadcrumbs a {
+               color: #fff;
+        }
+        a:link, a:visited {
+            color: #447e9b;
+            text-decoration: none;
+        }
+        .titles{
+                background: #79aec8;
+                border: none;
+                text-align: left;
+                color: white;
+                padding-left: 15px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                font-size: 12px;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                width: 100%;
+        }
+        table{
+            width: 50%;
+        }
+    </style>
+{% endblock %}
+
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="/admin/">Inicio</a>
+        › 
+        <a href="/admin/informes">Informes</a>
+        ›
+        Libros    
+        
+    </div>
+    
+
+{% endblock %}
+    
+
+{% block object-tools %}
+    <table>
+        <caption>
+            <div class="titles">
+                Libros de más leido a menos leido
+            </div>
+        </caption>
+        <thead style="width: 100%;">
+            <tr>
+                <th scope="col">
+                    <div class="text">ISBN</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col">
+                    <div class="text">|</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col">
+                    <div class="text">Titulo</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col">
+                    <div class="text">|</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col">
+                    <div class="text">Autor</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col">
+                    <div class="text">|</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col">
+                    <div class="text">Personas que lo leyeron</div>
+                    <div class="clear"></div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for each in libros %}
+                <tr class="model-user">
+                    <th scope="row">{{each.isbn}}</th>
+                    <th scope="row"><div class="text">|</div><div class="clear"></div></th>
+                    <th scope="row"><a href="/admin/bookflix/libro/{{each.idLibro}}/change">{{each.titulo}}</a></th>
+                    <th scope="row"><div class="text">|</div><div class="clear"></div></th>
+                    <th scope="row"><a href="/admin/bookflix/autor/{{each.autor.id}}/change">{{each.autor}}</a></th>
+                    <th scope="row"><div class="text">|</div><div class="clear"></div></th>
+                    <th scope="row">{{each.cant}}</th>
+                    <td>&nbsp;</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+
+
+
+{% endblock %}

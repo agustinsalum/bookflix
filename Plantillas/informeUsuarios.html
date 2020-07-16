@@ -1,0 +1,167 @@
+{% extends 'admin/base_site.html' %}
+
+{% load static %}
+
+{% block branding %}
+    <div class="head">
+        <a href="/admin/"><h1 id="name" style="color: white;">Administracion Bookflix</a>
+    </div>
+{% endblock %}
+
+{% block usertools %}
+    <div id="user-tools">
+        Bienvenido/a,
+        <strong>Julian</strong>.
+
+
+        
+            <a href="/">Ver sitio</a> /
+        
+        
+            
+            
+        
+        <a href="/admin/informes/">Informes</a> /
+
+        <a href="/admin/password_change/">Cambiar contraseña</a> /
+        
+        <a href="/admin/logout/">Cerrar sesión</a>
+
+    </div>
+{% endblock%}
+
+{% block extrastyle %}
+    <style>
+        .errornote {
+            font-size: 14px;
+            font-weight: 700;
+            display: block;
+            padding: 10px 12px;
+            margin: 0 0 10px 0;
+            color: #ba2121;
+            border: 1px solid #ba2121;
+            border-radius: 4px;
+            background-color: #fff;
+            background-position: 5px 12px;
+        }
+        .breadcrumbs{
+                background: #79aec8;
+                padding: 10px 40px;
+                border: none;
+                font-size: 16px;
+                text-align: left;
+                color: #c4dce8;
+        }
+        div.breadcrumbs a {
+               color: #fff;
+        }
+        a:link, a:visited {
+            color: #447e9b;
+            text-decoration: none;
+        }
+        .titles{
+                background: #79aec8;
+                border: none;
+                text-align: left;
+                color: white;
+                padding-left: 15px;
+                padding-top: 5px;
+                padding-bottom: 5px;
+                font-size: 12px;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                width: 100%;
+        }
+        table{
+            width: 50%;
+        }
+    </style>
+{% endblock %}
+
+
+{% block breadcrumbs %}
+    <div class="breadcrumbs">
+        <a href="/admin/">Inicio</a>
+        › 
+        <a href="/admin/informes">Informes</a>
+        ›
+        Libros    
+        
+    </div>
+    
+
+{% endblock %}
+    
+
+{% block object-tools %}
+    <div>
+        {% if error %}
+            <p class="errornote">
+                La fecha tope no puede ser menor a la fecha minima.
+            </p>
+        {% endif %}
+        <div class="titles" style="width: 50%;">
+            SELECCIONE EL RANGO DE FECHAS
+        </div>
+        <form action="/admin/informes/Usuarios" method="POST">
+            {% csrf_token %}
+            <label>Desde:</label>
+            <input type="date" name="fechaDesde" required="True" value="{{fechaInicio}}">
+            <label>Hasta:</label>
+            <input type="date" name="fechaHasta" required="True" value="{{fechaFinal}}"><br>
+            <div style="padding-top: 5px; padding-bottom: 5px;">
+                <button type="submit">Aplicar limites de fechas</button>
+            </div>
+        </form>
+    </div>
+
+    <table>
+        <caption>
+            <div class="titles">
+                Usuarios
+            </div>
+        </caption>
+        <thead>
+            <tr>
+                <th scope="col">
+                    <div class="text">Username</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col">
+                    <div class="text">|</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col">
+                    <div class="text">DNI</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col">
+                    <div class="text">|</div>
+                    <div class="clear"></div>
+                </th>
+                <th scope="col">
+                    <div class="text">Fecha de Registro</div>
+                    <div class="clear"></div>
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for each in usuarios %}
+                <tr class="model-user">
+                    <th scope="row"><a href="/admin/bookflix/usuario/{{each.idUsuario}}/change">{{each.username}}</a></th>
+                    <th scope="row"><div class="text">|</div><div class="clear"></div></th>
+                    <th scope="row">{{each.dni}}</th>
+                    <th scope="row"><div class="text">|</div><div class="clear"></div></th>
+                    <th scope="row">{{each.fecha}}</th>
+                    <td>&nbsp;</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+
+
+
+
+
+{% endblock %}
