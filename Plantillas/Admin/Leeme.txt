@@ -1,0 +1,2 @@
+
+Informes del administrador (usuarios entre fechas, cantidad de libros leidos... etc)
